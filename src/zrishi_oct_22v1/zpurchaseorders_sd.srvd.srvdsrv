@@ -1,0 +1,7 @@
+@EndUserText.label: 'Purchase Orders'
+define service ZPurchaseOrders_SD {
+  expose ZC_PurchaseHeaderDetails as PurchaseOders;
+  expose ZC_PurchaseItems as PurchaseItems;
+  expose ZC_PURCHASESTATUS as PurchaseStatus;
+  expose ZC_Supplier as Supplier;
+}

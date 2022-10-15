@@ -1,0 +1,132 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo:{
+imageUrl: 'Imageurl',
+typeName: 'Purchase Order',
+typeNamePlural: 'Purchase Orders',
+
+title:{ value: 'Description' },
+description:{
+
+label: 'Manage Purchase Orders',
+type: #STANDARD,
+value: 'OrderType'
+}
+}
+
+annotate entity ZC_PurchaseHeaderDetails with
+{
+
+@UI.facet: [{
+id:'Collection',
+purpose: #STANDARD,
+type: #COLLECTION,
+label: 'General Information'
+ },
+ { 
+ 
+ id:'BasicInfo',
+ purpose: #STANDARD,
+ parentId: 'Collection',
+ position: 10,
+ targetQualifier: 'BasicGroup',
+ type: #FIELDGROUP_REFERENCE,
+ label: 'Basic Data'
+ },
+ { 
+ 
+ id:'OrgInfo',
+ purpose: #STANDARD,
+ parentId: 'Collection',
+ position: 20,
+ targetQualifier: 'OrgGroup',
+ type: #FIELDGROUP_REFERENCE,
+ label: 'Organization Data'
+ },
+ 
+ { 
+ 
+ id:'ItemInfo',
+ purpose: #STANDARD,
+ type: #LINEITEM_REFERENCE,
+ position: 20,
+ targetElement: '_Items',
+ label: 'Purchase Items'
+ },
+ { 
+ id:'SupplierInfo',
+ purpose: #STANDARD,
+ type:#IDENTIFICATION_REFERENCE,
+ position: 30,
+ targetElement: '_Supplier',
+ label: 'Supplier Details'
+ },
+ 
+ { 
+ 
+ id:'Header1',
+ purpose: #HEADER,
+ type: #DATAPOINT_REFERENCE,
+ targetQualifier: 'OrderDate',
+ position: 10
+ },
+ { 
+ 
+ id:'Header2',
+ purpose: #HEADER,
+ type: #DATAPOINT_REFERENCE,
+ targetQualifier: 'OrderStatus',
+ position: 20
+ },
+ { 
+ 
+ id:'Header3',
+ purpose: #HEADER,
+ type: #DATAPOINT_REFERENCE,
+ targetQualifier: 'OverallPrice',
+ position: 20
+ }
+ ]
+  @UI.lineItem: [{ position: 10, label: 'Purchase Order', importance: #HIGH }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.fieldGroup: [{ position: 10, label: 'Purchase Order',qualifier: 'BasicGroup' }]
+  PurchaseOrderNumber;
+  @UI.lineItem: [{ position: 20, label: 'Description' }]
+  Description;
+  //    PurchaseTotalPrice;
+  //@UI.lineItem: [{ position: 30, label: 'Price', importance: #HIGH }]
+  @UI.fieldGroup: [{ position: 30, label: 'Unit',qualifier: 'BasicGroup' }]
+ @UI.dataPoint:{ qualifier: 'OverallPrice',title: 'Overall Price',criticality: 'CriticalityValue' }
+  PriceUnit;
+  @UI.fieldGroup: [{ position: 40, label: 'Unit',qualifier: 'BasicGroup' }]
+  PurchaseTotalPrice;
+ 
+  @UI.lineItem: [{ position: 40, label: 'Order Type',importance: #HIGH }]
+  @UI.selectionField: [{ position: 20 }]
+  @UI.fieldGroup: [{ position: 20, label: 'Purchase Order Type',qualifier: 'BasicGroup' }]
+  OrderType;
+  @UI.lineItem: [{ position: 50, label: 'Company Code',importance: #HIGH }]
+  CompanyCode;
+  @UI.lineItem: [{ position: 60, label: 'Organization',importance: #HIGH }]
+  @UI.fieldGroup: [{ position: 10, label: 'Company Code',qualifier: 'OrgGroup' }]
+  Organization;
+  @UI.lineItem: [{ position: 70, label: 'Supplier',importance: #HIGH,type: #AS_CONTACT,value: '_Supplier' }]
+  @UI.selectionField: [{ position: 20 }]
+
+  Supplier;
+  @UI.selectionField: [{ position: 40  }]
+  @UI.lineItem: [{ position:  80, label: 'Purchase Status',criticality: 'CriticalityValue',importance: #HIGH }]
+  @UI.dataPoint:{ title: 'Status',qualifier: 'OrderStatus',criticality: 'CriticalityValue' }
+  OrderStatus;
+  //    Imageurl;
+  //    CreateBy;
+  @UI.dataPoint:{ title: 'Creation Date',qualifier: 'OrderDate' }
+      CreatedDateTime;
+  //    ChangedDateTime;
+  //    LocalLastChangedBy;
+  //    /* Associations */
+  //    _OrderType;
+  //    _purchaseitems;
+  //    _Supplier;
+
+}
