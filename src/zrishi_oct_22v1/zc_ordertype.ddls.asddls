@@ -7,8 +7,13 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
+@Search.searchable: true
 //Enable text search and also make it Valuhelp
-define view entity ZC_ORDERTYPE as select from ZI_OrderType {
-    key PoType,
-    IsActive
+define view entity ZC_ORDERTYPE
+  as select from ZI_OrderType
+{
+      @Search.defaultSearchElement: true
+
+  key PoType,
+      IsActive
 }

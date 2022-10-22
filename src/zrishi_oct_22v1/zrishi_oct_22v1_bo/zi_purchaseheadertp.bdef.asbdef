@@ -1,0 +1,70 @@
+managed implementation in class zbp_i_purchaseheadertp unique;
+strict ( 2 );
+
+define behavior for ZI_PurchaseHeaderTP alias PurchaseOrder
+persistent table zpoheader_db
+lock master
+early numbering
+authorization master ( instance )
+//etag master <field_name>
+{
+  field ( readonly  ) PurchaseOrderNumber,PurchaseTotalPrice;
+  field ( mandatory : create ) Description;
+  create;
+  update;
+  delete;
+  association _POItems { create; }
+  action Copy result [1] $self;
+  action WithdrawApproval result [1] $self;
+
+  validation validateStatus on save { create; field OrderStatus; }
+
+
+  mapping for zpoheader_db
+  {
+    PurchaseOrderNumber = po_order;
+    Description = po_desc;
+    CompanyCode = comp_code;
+    CreateBy = create_by;
+    CreatedDateTime = created_date_time;
+    ChangedDateTime = changed_date_time;
+    OrderType = po_type;
+    Organization = po_org;
+    OrderStatus = po_status;
+    Supplier = supplier;
+    LocalLastChangedBy = local_last_changed_by;
+
+  }
+}
+
+define behavior for ZI_PurchaseItemsTP alias PurchaseItems
+implementation in class zbp_i_purchaseItemstp unique
+
+persistent table zpoitems_db
+
+early numbering
+lock dependent by _PurchaseHeader
+authorization dependent by _PurchaseHeader
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) PurchaseOrderNumber, PurchaseItem;
+  association _PurchaseHeader;
+//  determination calculateTotalPrice on save  { update;create;  field ProductPrice,PriceUnit,OrderQunt,OrderUnit; }
+  mapping for ZPOITEMS_DB
+  {
+    PurchaseOrderNumber = po_order;
+    PurchaseItem = po_item;
+    ProductPrice = product_price;
+    Material = material;
+    MatGroup = mat_group;
+    PriceUnit = price_unit;
+    ShortText = short_text;
+    OrderQunt = order_qunt;
+    OrderUnit = order_unit;
+    Plant = plant;
+    LocalLastChangedBy = local_last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}

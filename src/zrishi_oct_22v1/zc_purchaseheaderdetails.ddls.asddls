@@ -41,7 +41,7 @@ define view entity ZC_PurchaseHeaderDetails
       @ObjectModel.text.element: ['SupplierName']
       @Consumption.filter:{multipleSelections: false }
       Supplier,
-
+ 
       case
       when OrderStatus = '01' then 2
       when OrderStatus = '02' then 3

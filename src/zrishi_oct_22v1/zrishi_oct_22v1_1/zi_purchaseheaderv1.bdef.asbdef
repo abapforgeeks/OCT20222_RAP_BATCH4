@@ -1,0 +1,62 @@
+managed implementation in class zbp_i_purchaseheaderv1 unique;
+strict ( 2 );
+
+define behavior for ZI_PURCHASEHEADERV1 alias PurchaseOrder
+persistent table zpoheader_db
+lock master
+early numbering
+authorization master ( instance )
+etag master ChangedDateTime
+{
+  field ( readonly ) PurchaseOrderNumber;
+  create;
+  update;
+  delete;
+  association _PurchaseItems { create; }
+  mapping for ZPOHEADER_DB
+  {
+
+    PurchaseOrderNumber = po_order;
+    Description = po_desc;
+    CompanyCode = comp_code;
+    CreateBy = create_by;
+    CreatedDateTime = created_date_time;
+    ChangedDateTime = changed_date_time;
+    OrderType = po_type;
+    Organization = po_org;
+    OrderStatus = po_status;
+    Supplier = supplier;
+    LocalLastChangedBy = local_last_changed_by;
+
+  }
+}
+
+
+define behavior for ZI_PURCHASEITEMSV1 alias PurchaseItems
+implementation in class zbp_i_purchaseitemsv1 unique
+persistent table zpoitems_db
+lock dependent by _PurchaseOrder
+early numbering
+authorization dependent by _PurchaseOrder
+etag master LocalLastChangedBy
+{
+  update;
+  delete;
+  field ( readonly ) PurchaseOrderNumber;
+  association _PurchaseOrder;
+  mapping for zpoitems_db
+  {
+    PurchaseOrderNumber = po_order;
+    PurchaseItem = po_item;
+    ItemPrice = product_price;
+    Material = material;
+    MatGroup = mat_group;
+    PriceUnit = price_unit;
+    ShortText = short_text;
+    OrderQunt = order_qunt;
+    OrderUnit = order_unit;
+    Plant = plant;
+    LocalLastChangedBy = local_last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}

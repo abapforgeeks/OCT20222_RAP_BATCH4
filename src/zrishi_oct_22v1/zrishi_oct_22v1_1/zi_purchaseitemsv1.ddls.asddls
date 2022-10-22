@@ -7,8 +7,8 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
-define view entity ZI_PurchaseItems as select from zpoitems_db
-association[1] to ZI_PurchaseHeader as _PurchaseOrder 
+define view entity ZI_PURCHASEITEMSV1 as select from zpoitems_db
+association to parent ZI_PURCHASEHEADERV1 as _PurchaseOrder 
 on $projection.PurchaseOrderNumber = _PurchaseOrder.PurchaseOrderNumber
 
 association[1] to I_Currency as _Currency on $projection.PriceUnit = _Currency.Currency
@@ -28,8 +28,10 @@ association[1] to I_Currency as _Currency on $projection.PriceUnit = _Currency.C
     price_unit as PriceUnit,
    // @Semantics.amount.currencyCode: 'PriceUnit'
     cast(  cast( order_qunt as abap.dec( 10, 2 )) * cast( product_price as abap.dec(10,2)) as abap.dec(10,2))   as ItemPrice,
+    @Semantics.user.lastChangedBy: true
     local_last_changed_by as LocalLastChangedBy,
-    local_last_changed_at,
+    @Semantics.systemDateTime.localInstanceLastChangedAt: true
+    local_last_changed_at as LocalLastChangedAt,
     _PurchaseOrder,
     _Currency
 }

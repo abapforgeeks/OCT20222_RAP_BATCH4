@@ -1,0 +1,22 @@
+projection;
+strict ( 2 );
+
+define behavior for ZC_PURCHASEHEADERTP alias PurchaseOrder
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _POItems { create; }
+  use action Copy as CopyPO;
+  use action WithdrawApproval as WithDrawPOApproval;
+
+}
+
+define behavior for ZC_PURCHASEITEMSTP alias PurchaseItems
+{
+  use update;
+  use delete;
+
+  use association _PurchaseHeader;
+}

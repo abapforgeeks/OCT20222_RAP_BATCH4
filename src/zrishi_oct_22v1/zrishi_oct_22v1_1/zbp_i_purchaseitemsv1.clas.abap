@@ -1,0 +1,5 @@
+CLASS zbp_i_purchaseitemsv1 DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_purchaseheaderv1.
+ENDCLASS.
+
+CLASS zbp_i_purchaseitemsv1 IMPLEMENTATION.
+ENDCLASS.

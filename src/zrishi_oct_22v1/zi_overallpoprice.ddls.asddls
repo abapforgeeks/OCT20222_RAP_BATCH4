@@ -24,6 +24,7 @@ define view entity ZI_OverAllPOPrice as select from ZI_PurchaseHeader {
     CreatedDateTime,
     ChangedDateTime,
     LocalLastChangedBy,
+    
     /* Associations */
     _OrderType,
     _PurchaseItems,
