@@ -30,6 +30,8 @@ define root view entity ZI_PurchaseHeaderTP
       ChangedDateTime,
       @Semantics.user.lastChangedBy: true
       LocalLastChangedBy,
+      @Semantics.systemDateTime.lastChangedAt: true
+      last_changed_at,
 
       /* Associations */
       _OrderType,

@@ -27,7 +27,7 @@ association[1] to ZI_Supllier as _Supplier on $projection.Supplier = _Supplier.S
     created_date_time as CreatedDateTime,
     changed_date_time as ChangedDateTime,
     local_last_changed_by as LocalLastChangedBy,
-  
+    last_changed_at,
     _PurchaseItems,
     _OrderType,
     _OrderStatus,

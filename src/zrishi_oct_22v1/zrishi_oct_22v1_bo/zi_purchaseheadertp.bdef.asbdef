@@ -1,24 +1,35 @@
 managed implementation in class zbp_i_purchaseheadertp unique;
 strict ( 2 );
-
+with draft;
 define behavior for ZI_PurchaseHeaderTP alias PurchaseOrder
 persistent table zpoheader_db
+draft table zpoheader_db_dv1
 lock master
+total etag last_changed_at
 early numbering
 authorization master ( instance )
-//etag master <field_name>
+
+etag master ChangedDateTime
 {
-  field ( readonly  ) PurchaseOrderNumber,PurchaseTotalPrice;
-  field ( mandatory : create ) Description;
+  field ( readonly ) PurchaseOrderNumber, PurchaseTotalPrice;
+  field ( mandatory ) Description;
   create;
   update;
   delete;
-  association _POItems { create; }
+  association _POItems { create; with draft; }
   action Copy result [1] $self;
   action WithdrawApproval result [1] $self;
 
   validation validateStatus on save { create; field OrderStatus; }
 
+  draft action Edit;
+  draft action Resume;
+  draft action Discard;
+  draft action Activate;
+  draft determine action Prepare
+  {
+  validation validateStatus;
+  }
 
   mapping for zpoheader_db
   {
@@ -33,6 +44,7 @@ authorization master ( instance )
     OrderStatus = po_status;
     Supplier = supplier;
     LocalLastChangedBy = local_last_changed_by;
+    last_changed_at = last_changed_at;
 
   }
 }
@@ -41,17 +53,22 @@ define behavior for ZI_PurchaseItemsTP alias PurchaseItems
 implementation in class zbp_i_purchaseItemstp unique
 
 persistent table zpoitems_db
-
+draft table zpoitems_dbv1
 early numbering
 lock dependent by _PurchaseHeader
 authorization dependent by _PurchaseHeader
-//etag master <field_name>
+etag master LocalLastChangedAt
 {
   update;
   delete;
-  field ( readonly ) PurchaseOrderNumber, PurchaseItem;
-  association _PurchaseHeader;
-//  determination calculateTotalPrice on save  { update;create;  field ProductPrice,PriceUnit,OrderQunt,OrderUnit; }
+  field ( readonly ) PurchaseOrderNumber, PurchaseItem, ItemPrice;
+  association _PurchaseHeader{ with draft; }
+  determination setPurchaseStatus on save { create; field ProductPrice, PriceUnit, OrderQunt, OrderUnit; }
+
+// draft determine action Prepare
+//  {
+//  determination setPurchaseStatus;
+//  }
   mapping for ZPOITEMS_DB
   {
     PurchaseOrderNumber = po_order;

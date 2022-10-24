@@ -40,6 +40,7 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
       ls_entity-PurchaseOrderNumber = |{ lv_max_po ALPHA = IN }|.
 
       APPEND VALUE #(   %cid = ls_entity-%cid
+                        %is_draft = ls_entity-%is_draft
                         PurchaseOrderNumber = ls_entity-PurchaseOrderNumber )
                          TO mapped-purchaseorder.
 
@@ -49,12 +50,21 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD earlynumbering_cba_poitems.
-    SELECT po_order,
-              po_item AS itemno
-       FROM zpoitems_db
-       FOR ALL ENTRIES IN @entities
-       WHERE po_order EQ @entities-purchaseordernumber
-       INTO TABLE @DATA(lt_poitems).
+
+    READ ENTITY
+    IN LOCAL MODE
+    ZI_PurchaseHeaderTP
+    BY \_POItems
+    ALL FIELDS WITH CORRESPONDING #( entities )
+    RESULT DATA(lt_poitems).
+
+
+*    SELECT po_order,
+*              po_item AS itemno
+*       FROM zpoitems_db
+*       FOR ALL ENTRIES IN @entities
+*       WHERE po_order EQ @entities-purchaseordernumber
+*       INTO TABLE @DATA(lt_poitems).
 
 
     DATA(lt_final_keys) = entities.
@@ -62,15 +72,21 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
 
     LOOP AT lt_final_keys INTO DATA(ls_final_key) .
       "Get Maximum number from item from the PO
-      SELECT MAX( itemno ) FROM @lt_poitems AS itemkeys
-       WHERE po_order = @ls_final_key-purchaseordernumber
+      SELECT MAX( purchaseitem ) FROM @lt_poitems AS itemkeys
+       WHERE PurchaseOrderNumber = @ls_final_key-purchaseordernumber
        INTO @DATA(lv_itemno).
 
       LOOP AT ls_final_key-%target INTO DATA(ls_item).
 *        lv_itemno += 10.
-        lv_itemno = lv_itemno + 10.
+        IF ls_final_key-%is_draft = 01.
+          lv_itemno = lv_itemno + 10.
+        ELSE.
+          lv_itemno = ls_item-PurchaseItem.
+        ENDIF.
         ls_item-PurchaseItem = |{ lv_itemno ALPHA = IN }|.
-        APPEND VALUE #( %cid = ls_item-%cid %key = ls_item-%key ) TO mapped-purchaseitems.
+        APPEND VALUE #( %cid = ls_item-%cid
+                         %tky = ls_final_key-%tky
+                         %key = ls_item-%key ) TO mapped-purchaseitems.
       ENDLOOP.
 
 
@@ -86,7 +102,7 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
     DATA: lt_keys TYPE TABLE FOR READ IMPORT ZI_PurchaseHeaderTP.
 
     LOOP AT keys INTO DATA(ls_keys).
-      APPEND VALUE #( %key = ls_keys-%key
+      APPEND VALUE #( %tky = ls_keys-%tky
                      %control-description = 01
                      %control-companycode = 01
                      %control-OrderType = 01
@@ -124,14 +140,14 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
 *
 *
 *    ENDLOOP.
-*    result = VALUE #(  FOR ls_new_po IN lt_new_po INDEX INTO lv_index
-*
-*                     (   %cid_ref = keys[ lv_index ]-%cid_ref
-*                       %key =  keys[ lv_index ]-%key
-*                       %param = CORRESPONDING #( ls_new_po )
-*                      )
-*
-*                      ).
+    result = VALUE #(  FOR ls_new_po IN lt_new_po INDEX INTO lv_index
+
+                     (   %cid_ref = keys[ lv_index ]-%cid_ref
+                       %key =  keys[ lv_index ]-%key
+                       %param = CORRESPONDING #( ls_new_po )
+                      )
+
+                      ).
 
 
 

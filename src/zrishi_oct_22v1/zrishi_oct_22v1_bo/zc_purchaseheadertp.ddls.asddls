@@ -38,6 +38,7 @@ define root view entity ZC_PURCHASEHEADERTP
       @Consumption.valueHelpDefinition: [{ entity:{name: 'ZC_PURCHASESTATUS',element: 'Postatus'  } } ]
       @ObjectModel.text.element: ['StatusDesc']
       OrderStatus,
+      last_changed_at,
       _OrderStatus.Statusdesc,
      
       CreatedDateTime,
