@@ -8,6 +8,7 @@ define behavior for ZC_PURCHASEHEADERTP alias PurchaseOrder
   use delete;
 
   use association _POItems { create; with draft; }
+  use association _POAttachment {create; with draft;}
   use action Copy as CopyPO;
   use action WithdrawApproval as WithDrawPOApproval;
 
@@ -24,5 +25,13 @@ define behavior for ZC_PURCHASEITEMSTP alias PurchaseItems
   use update;
   use delete;
 
-  use association _PurchaseHeader{ with  draft; }
+  use association _PurchaseHeader { with draft; }
+}
+
+define behavior for ZC_PO_ATTACHMENT alias PurchaseAttachments
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
 }

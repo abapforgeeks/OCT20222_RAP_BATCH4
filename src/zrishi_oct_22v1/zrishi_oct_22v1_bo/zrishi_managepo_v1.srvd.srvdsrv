@@ -5,4 +5,5 @@ define service ZRISHI_ManagePO_V1 {
   expose ZC_Supplier as Supplier;
   expose ZC_PURCHASESTATUS as OrderStatus;
   expose ZC_ORDERTYPE as OrderType;
+  expose ZC_PO_ATTACHMENT as Attachments;
 }

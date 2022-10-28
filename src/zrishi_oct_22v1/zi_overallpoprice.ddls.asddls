@@ -19,6 +19,7 @@ define view entity ZI_OverAllPOPrice as select from ZI_PurchaseHeader {
     Organization,
     Supplier,
     Imageurl,
+ 
     CreateBy,
     OrderStatus,
     CreatedDateTime,
@@ -46,4 +47,3 @@ group by
     _PurchaseItems.PriceUnit,
     OrderStatus,
     last_changed_at
-

@@ -1,0 +1,5 @@
+CLASS zbp_i_purchaseattach DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_purchaseheadertp.
+ENDCLASS.
+
+CLASS zbp_i_purchaseattach IMPLEMENTATION.
+ENDCLASS.

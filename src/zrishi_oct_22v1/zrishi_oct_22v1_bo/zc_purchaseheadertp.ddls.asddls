@@ -48,5 +48,7 @@ define root view entity ZC_PURCHASEHEADERTP
       _OrderType,
       @Search.defaultSearchElement: true
       _POItems : redirected to composition child ZC_PURCHASEITEMSTP,
+      _POAttachment: redirected to composition child ZC_PO_ATTACHMENT,
+      
       _SupplierData
 }

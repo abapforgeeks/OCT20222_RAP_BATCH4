@@ -69,6 +69,14 @@ annotate entity ZC_PURCHASEHEADERTP with
   targetElement: '_SupplierData',
   label: 'Supplier Details'
   },
+  { 
+  id: 'Attachment',
+  purpose: #STANDARD,
+  type: #LINEITEM_REFERENCE,
+  position: 40,
+  label: 'Attachments',
+  targetElement: '_POAttachment'
+  },
 
   {
 
@@ -109,10 +117,10 @@ annotate entity ZC_PURCHASEHEADERTP with
   //@UI.lineItem: [{ position: 30, label: 'Price', importance: #HIGH }]
   @UI.fieldGroup: [{ position: 30, label: 'Unit',qualifier: 'OverallInfo' }]
 
-  PriceUnit;
+  priceunit;
   @UI.fieldGroup: [{ position: 10, label: 'Overall Price',qualifier: 'OverallInfo' }]
   @UI.dataPoint:{ qualifier: 'OverallPrice',title: 'Overall Price',criticality: 'CriticalityValue' }
-  PurchaseTotalPrice;
+  purchasetotalprice;
 
   @UI.lineItem: [{ position: 40, label: 'Order Type',importance: #HIGH }]
   @UI.selectionField: [{ position: 20 }]

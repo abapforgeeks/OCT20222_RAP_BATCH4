@@ -18,6 +18,9 @@ CLASS lhc_ZI_PurchaseHeaderTP DEFINITION INHERITING FROM cl_abap_behavior_handle
     METHODS earlynumbering_cba_poitems FOR NUMBERING
       IMPORTING entities FOR CREATE PurchaseOrder\_POItems.
 
+    METHODS earlynumbering_cba_poattach FOR NUMBERING
+      IMPORTING entities FOR CREATE PurchaseOrder\_POAttachment.
+
 ENDCLASS.
 
 CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
@@ -101,6 +104,7 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
 
     DATA: lt_keys TYPE TABLE FOR READ IMPORT ZI_PurchaseHeaderTP.
 
+*
     LOOP AT keys INTO DATA(ls_keys).
       APPEND VALUE #( %tky = ls_keys-%tky
                      %control-description = 01
@@ -116,6 +120,10 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
     ZI_PurchaseHeaderTP
     FROM lt_keys
     RESULT DATA(lt_purchase_data).
+
+*    modify ENTITY IN LOCAL MODE
+*    ZI_purchaseheadertp
+*    EXECUTE Edit
 
 *2. create a new entry from the copied PO.
     MODIFY ENTITIES OF
@@ -136,26 +144,26 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
 
     DATA: ls_result TYPE TABLE FOR READ RESULT ZI_PurchaseHeaderTP.
 *4. Send back to UI
-*    loop at lt_new_po INTO data(ls_po).
-*
-*
-*    ENDLOOP.
+    LOOP AT lt_new_po INTO DATA(ls_po).
+
+
+    ENDLOOP.
+*    if the %key  is different from key value in %param framework navigates to Object page,
     result = VALUE #(  FOR ls_new_po IN lt_new_po INDEX INTO lv_index
 
-                     (   %cid_ref = keys[ lv_index ]-%cid_ref
-                       %key =  keys[ lv_index ]-%key
-                       %param = CORRESPONDING #( ls_new_po )
-                      )
+                     (  %key =  ls_new_po-%key
+                       %param = CORRESPONDING #( ls_new_po )   )
+
 
                       ).
-
+*    result = VALUE #( (  ) ).
 
 
   ENDMETHOD.
 
   METHOD WithdrawApproval.
 
-    "modify the status
+*    "modify the status
     MODIFY ENTITIES OF ZI_PurchaseHeaderTP
     IN LOCAL MODE
     ENTITY PurchaseOrder
@@ -179,9 +187,9 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
 
 
   ENDMETHOD.
-
+*
   METHOD validateStatus.
-
+*
     DATA: lo_ref TYPE REF TO cl_abap_behv.
 
     CREATE OBJECT lo_ref.
@@ -226,6 +234,42 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
     ENDLOOP.
 
 
+
+  ENDMETHOD.
+
+  METHOD earlynumbering_cba_poattach.
+    READ ENTITY
+     IN LOCAL MODE
+     ZI_PurchaseHeaderTP
+     BY \_POAttachment
+     ALL FIELDS WITH CORRESPONDING #( entities )
+     RESULT DATA(lt_po_attachments).
+
+
+    DATA(lt_final_keys) = entities.
+
+
+    LOOP AT lt_final_keys INTO DATA(ls_final_key) .
+      "Get Maximum number from item from the PO
+      SELECT MAX( attachId ) FROM @lt_po_attachments AS itemkeys
+       WHERE PurchaseOrderNumber = @ls_final_key-purchaseordernumber
+       INTO @DATA(lv_attach_id).
+
+      LOOP AT ls_final_key-%target INTO DATA(ls_item).
+*        lv_itemno += 10.
+        IF ls_final_key-%is_draft = 01.
+          lv_attach_id = lv_attach_id + 10.
+        ELSE.
+          lv_attach_id = ls_item-attachId.
+        ENDIF.
+        ls_item-attachId = |{ lv_attach_id ALPHA = IN }|.
+        APPEND VALUE #( %cid = ls_item-%cid
+                         %tky = ls_final_key-%tky
+                         %key = ls_item-%key ) TO mapped-attachment.
+      ENDLOOP.
+
+
+    ENDLOOP.
 
   ENDMETHOD.
 

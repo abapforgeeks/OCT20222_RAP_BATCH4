@@ -17,7 +17,8 @@ etag master ChangedDateTime
   update;
   delete;
   association _POItems { create; with draft; }
-  action Copy result [1] $self;
+  association _POAttachment {create;with draft;}
+  action Copy result [1] entity ZI_PurchaseHeaderTP;
   action WithdrawApproval result [1] $self;
 
   validation validateStatus on save { create; field OrderStatus; }
@@ -28,7 +29,7 @@ etag master ChangedDateTime
   draft action Activate;
   draft determine action Prepare
   {
-  validation validateStatus;
+    validation validateStatus;
   }
 
   mapping for zpoheader_db
@@ -62,13 +63,13 @@ etag master LocalLastChangedAt
   update;
   delete;
   field ( readonly ) PurchaseOrderNumber, PurchaseItem, ItemPrice;
-  association _PurchaseHeader{ with draft; }
+  association _PurchaseHeader { with draft; }
   determination setPurchaseStatus on save { create; field ProductPrice, PriceUnit, OrderQunt, OrderUnit; }
 
-// draft determine action Prepare
-//  {
-//  determination setPurchaseStatus;
-//  }
+  // draft determine action Prepare
+  //  {
+  //  determination setPurchaseStatus;
+  //  }
   mapping for ZPOITEMS_DB
   {
     PurchaseOrderNumber = po_order;
@@ -83,5 +84,30 @@ etag master LocalLastChangedAt
     Plant = plant;
     LocalLastChangedBy = local_last_changed_by;
     LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+define behavior for ZI_PO_ATTACHMENT alias Attachment
+implementation in class zbp_i_purchaseAttach unique
+
+persistent table zpo_attachment
+draft table zpo_attachment_d
+early numbering
+lock dependent by _Header
+authorization dependent by _Header
+etag master LastChangedAt
+{
+  field ( readonly ) Purchaseordernumber,attachId;
+  update;
+  delete;
+  association _Header { with draft; }
+  mapping for zpo_attachment
+  {
+    Purchaseordernumber = purchaseordernumber;
+    Attachment = attachment;
+    Filename = filename;
+    Mimetype = mimetype;
+    LastChangedAt = last_changed_at;
+    attachId = attah_id;
   }
 }
