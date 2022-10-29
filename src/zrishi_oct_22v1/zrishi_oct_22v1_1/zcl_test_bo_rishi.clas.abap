@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_test_bo_rishi IMPLEMENTATION.
+CLASS ZCL_TEST_BO_RISHI IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

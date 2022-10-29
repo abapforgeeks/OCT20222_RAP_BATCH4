@@ -1,0 +1,8 @@
+@EndUserText.label: 'unmanaged service definition for PO'
+define service ZRISHI_Unmanaged_PO {
+  expose ZC_PURCHASEHEADERTP_UM as PurchaseOrders;
+  expose ZC_PURCHASEITEMSTP_UM as PurchaseItems;
+  expose ZC_Supplier as Suppliers;
+  expose ZC_PURCHASESTATUS as OrderStatus;
+  expose ZC_ORDERTYPE as OrderType;
+}

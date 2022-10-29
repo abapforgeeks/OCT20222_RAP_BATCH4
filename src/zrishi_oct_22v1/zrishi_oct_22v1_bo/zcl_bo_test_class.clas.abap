@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_bo_test_class IMPLEMENTATION.
+CLASS ZCL_BO_TEST_CLASS IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

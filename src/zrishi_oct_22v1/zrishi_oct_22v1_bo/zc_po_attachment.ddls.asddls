@@ -23,7 +23,7 @@ define view entity ZC_PO_ATTACHMENT
                  type: #COLLECTION,
                  position: 10
                  },
-                      { id:            'Invoicedet',
+                      { id:            'POInfo',
                      purpose:       #STANDARD,
                      type:          #IDENTIFICATION_REFERENCE,
                      label:         'Purchase Order',

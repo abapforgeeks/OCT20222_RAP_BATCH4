@@ -238,6 +238,7 @@ CLASS lhc_ZI_PurchaseHeaderTP IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD earlynumbering_cba_poattach.
+
     READ ENTITY
      IN LOCAL MODE
      ZI_PurchaseHeaderTP
