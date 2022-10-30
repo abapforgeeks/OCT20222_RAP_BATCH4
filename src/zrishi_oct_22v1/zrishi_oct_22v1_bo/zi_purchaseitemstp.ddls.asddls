@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Purchase Order Items child of ZZI_PurchaseHeaderTP'
+@EndUserText.label: 'Purchase Order Items ZZI_PurchaseHeaderTP'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -13,7 +13,7 @@ on $projection.PurchaseOrderNumber
 = _PurchaseHeader.PurchaseOrderNumber
  { 
     key PurchaseOrderNumber,
-    key PurchaseItem,
+    key PurchaseItem, 
     ShortText,
     Material,
     Plant,
@@ -23,6 +23,7 @@ on $projection.PurchaseOrderNumber
     OrderUnit,
     @Semantics.amount.currencyCode: 'PriceUnit'
     ProductPrice,
+    
     PriceUnit,
     ItemPrice,
     LocalLastChangedBy,

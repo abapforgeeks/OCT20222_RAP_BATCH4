@@ -1,0 +1,31 @@
+@Metadata.layer: #CORE
+annotate entity ZC_PurchaseOrdersCard2_V1 with
+{
+  @UI.lineItem: [{ position: 10, label: 'Purchase Order' }]
+  PurchaseOrderNumber;
+  @UI.lineItem: [{ position: 20, label: 'Create By' }]
+  @UI.dataPoint:{ title: 'Created By' }
+  CreateBy;
+  @UI.lineItem: [{ position: 30,label: 'Created On' }]
+ @UI.dataPoint:{ title: 'Creatd On' }
+  CreatedDateTime;
+  @UI:{
+
+  dataPoint:{
+
+  title: 'Overall Budget',
+  valueFormat.numberOfFractionalDigits: 2,
+  minimumValue: 0,
+  maximumValue: 100,
+  criticalityCalculation:{
+
+  improvementDirection: #MINIMIZE,
+  toleranceRangeHighValue: 60, // up to 80% I am okay, it will show in Green. If the values is between 80 and 100 show yellow
+  deviationRangeHighValue: 100 // if it crosses 100% , I am not okay, show in Red.
+  }
+  }
+  }
+  @UI.lineItem: [{ position: 40, label: 'Budget', type: #AS_DATAPOINT }]
+  BudgetUsage;
+
+}

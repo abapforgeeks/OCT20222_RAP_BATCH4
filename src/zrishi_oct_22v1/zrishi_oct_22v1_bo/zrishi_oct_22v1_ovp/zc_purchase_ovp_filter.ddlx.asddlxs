@@ -1,0 +1,14 @@
+@Metadata.layer: #CORE
+annotate entity ZC_PURCHASE_OVP_FILTER with
+{
+  @UI.hidden: true
+  PurchaseOrderNumber;
+  @UI.selectionField: [{ position: 10 }]
+  @EndUserText.label: 'Status'
+
+  OrderStatus;
+  @UI.selectionField: [{ position: 20 }]
+  @EndUserText.label: 'Priority'
+  Priority;
+
+}
