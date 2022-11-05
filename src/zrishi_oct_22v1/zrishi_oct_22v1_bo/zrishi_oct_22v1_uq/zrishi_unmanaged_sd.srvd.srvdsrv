@@ -1,0 +1,4 @@
+@EndUserText.label: 'Unamanged Query'
+define service ZRISHI_Unmanaged_SD {
+  expose zrishi_products_uq;
+}

@@ -10,7 +10,6 @@
 define view entity ZI_PurchaseItems as select from zpoitems_db
 association[1] to ZI_PurchaseHeader as _PurchaseOrder 
 on $projection.PurchaseOrderNumber = _PurchaseOrder.PurchaseOrderNumber
-
 association[1] to I_Currency as _Currency on $projection.PriceUnit = _Currency.Currency
 
 {

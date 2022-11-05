@@ -1,0 +1,33 @@
+@Metadata.layer: #CORE
+annotate view ZC_PurchaseOrdersCard2 with
+{
+  //ZC_Rishi_PO_Budget_Util_OVP
+  @UI.lineItem: [{ position: 10,label: 'Purchase Document' }]
+  PurchaseOrderNumber;
+  @UI.lineItem: [{ importance: #HIGH ,position: 10}]
+  @UI.dataPoint: { title: 'Created By' }
+  CreateBy;
+  @UI.lineItem: [{ importance: #HIGH ,position: 30}]
+  @UI.dataPoint: { title: 'Priority' }
+
+  Priority;
+  @UI.lineItem: [{ importance: #HIGH ,position: 30}]
+  @UI.dataPoint: { title: 'Status' }
+  
+  OrderStatus;
+  @UI: {
+  dataPoint: { 
+  title: 'Overall Budget',
+  valueFormat.numberOfFractionalDigits: 2,
+  minimumValue: 0,
+  maximumValue: 100,
+  criticalityCalculation: {
+  improvementDirection: #MINIMIZE,
+  toleranceRangeHighValue: 50,
+  deviationRangeHighValue: 100
+  }
+  }
+  }
+  @UI.lineItem: [{ position: 40,label:'Budget',type:#AS_DATAPOINT}]
+  BudgentUsage;
+}

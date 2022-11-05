@@ -1,0 +1,5 @@
+@EndUserText.label: 'ZRISHI_PRODUCTS'
+@OData.schema.name: 'ZPDCDS_SRV'
+define service ZRISHI_PRODUCTS {
+ expose ZZRSHSEPMRA_I_PRODUCT_E; 
+ } 
